@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Voice Based Image Caption Generator</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body Styling */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(45deg, #5f6caf, #2f3b8f);
+            background-size: 400% 400%;
+            animation: gradient 10s ease infinite;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* Container Styling */
+        .container {
+            background-color: rgba(34, 40, 49, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 2s ease-out;
+        }
+
+        h1, h2 {
+            font-size: 2rem;
+            color: #00bcd4;
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.8), 0 0 25px rgba(0, 188, 212, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            transition: 0.3s ease;
+        }
+
+        h1:hover, h2:hover {
+            color: #00e5ff;
+            text-shadow: 0 0 30px rgba(0, 188, 212, 1), 0 0 50px rgba(0, 188, 212, 0.7);
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        input[type="file"], select, button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 20px;
+            border: 1px solid #333;
+            background: #444;
+            color: #fff;
+            font-size: 1rem;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+
+        input[type="file"], select {
+            background: #555;
+        }
+
+        button {
+            background: #6a5acd;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 0 15px rgba(106, 92, 205, 0.7);
+        }
+
+        button:hover {
+            background: #5c4fa3;
+            box-shadow: 0 0 30px rgba(106, 92, 205, 0.9);
+            transform: scale(1.05);
+        }
+
+        /* Futuristic Animation */
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Text and Image Styling */
+        p {
+            font-size: 1.2rem; /* Increased font size for paragraph */
+            color: #bbb;
+            margin-top: 15px;
+        }
+
+        .caption, .translated-text {
+            font-size: 2rem; /* Larger text for captions and translated text */
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+            text-shadow: 0 0 15px rgba(0, 188, 212, 0.6), 0 0 30px rgba(0, 188, 212, 0.4);
+            line-height: 1.4;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+        }
+
+        .translated-text {
+            color: #ffeb3b; /* Highlight translated text with a different color */
+        }
+
+        img {
+            max-width: 90%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            transition: 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+        }
+
+        audio {
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Glowing Border Effect */
+        input[type="file"]:focus, select:focus, button:focus {
+            outline: none;
+            border: 2px solid #00bcd4;
+            box-shadow: 0 0 15px rgba(0, 188, 212, 0.7);
+        }
+
+        /* Media Query for Responsive Design */
+        @media screen and (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            input[type="file"], select, button {
+                padding: 12px;
+            }
+            .caption, .translated-text {
+                font-size: 1.5rem; /* Adjust size for smaller screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Multilingual Voice Based Image Caption Generator</h1>
+        <form action="/generate" method="post" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <select name="language" required>
+                <option value="">Choose Language</option>
+                <option value="mr">Marathi</option>
+                <option value="fr">French</option>
+                <option value="hi">Hindi</option>
+                <option value="te">Telugu</option>
+                <option value="gu">Gujarati</option>
+                <option value="ka">Kannada</option>
+                <option value="ta">Tamil</option>
+                <!-- Add more language options if needed -->
+            </select>
+            <button type="submit">Generate Caption</button>
+        </form>
+
+        {% if caption %}
+        <div class="caption">
+            <h2>Caption:</h2>
+            <p>{{ caption }}</p>
+        </div>
+        {% endif %}
+
+        {% if translated_text %}
+        <div class="translated-text">
+            <h2>Translated Text:</h2>
+            <p>{{ translated_text }}</p>
+            <audio controls>
+                <source src="{{ audio_url }}" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        {% endif %}
+
+        {% if image_url %}
+        <h2>Uploaded Image:</h2>
+        <img src="{{ image_url }}">
+        {% endif %}
+    </div>
+</body>
+</html>

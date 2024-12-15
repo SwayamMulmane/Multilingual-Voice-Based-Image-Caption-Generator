@@ -1,0 +1,22 @@
+from adb_shell.adb_device import AdbDeviceTcp
+import pyautogui
+import time
+
+# Function to connect to the Android device using ADB
+def adb_connect():
+    device = AdbDeviceTcp('192.168.1.8', 5555)  # Replace 'your_device_ip' with your device's IP
+    device.connect()
+
+# Function to simulate touch event on Android device using PyAutoGUI
+def simulate_touch(x, y):
+    pyautogui.click(x, y)
+
+# Main function
+def main():
+    adb_connect()
+    time.sleep(2)  # Wait for connection
+    # Simulate touch at coordinates (100, 100) on the Android device
+    simulate_touch(100, 100)
+
+if __name__ == "__main__":
+    main()
